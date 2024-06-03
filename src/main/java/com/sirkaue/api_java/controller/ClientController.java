@@ -1,6 +1,6 @@
 package com.sirkaue.api_java.controller;
 
-import com.sirkaue.api_java.entity.Client;
+import com.sirkaue.api_java.dto.ClientDto;
 import com.sirkaue.api_java.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +18,8 @@ public class ClientController {
     private ClientService clientService;
 
     @GetMapping
-    public ResponseEntity<List<Client>> findAll() {
-        List<Client> list = clientService.findAll();
+    public ResponseEntity<List<ClientDto>> findAll() {
+        List<ClientDto> list = clientService.findAll();
         return ResponseEntity.ok().body(list);
     }
 }
