@@ -4,11 +4,10 @@ import com.sirkaue.api_java.dto.ClientDto;
 import com.sirkaue.api_java.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,5 +27,17 @@ public class ClientController {
     public ResponseEntity<ClientDto> findById(@PathVariable Long id) {
         ClientDto dto = clientService.findById(id);
         return ResponseEntity.ok().body(dto);
+    }
+
+    @PostMapping
+    public ResponseEntity<ClientDto> insert(@RequestBody ClientDto dto) {
+        ClientDto validatedDto = clientService.insert(dto);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(validatedDto.getId())
+                .toUri();
+
+        return ResponseEntity.created(uri).body(validatedDto);
     }
 }
