@@ -1,6 +1,7 @@
 package com.sirkaue.api_java.controller.exception;
 
 import com.sirkaue.api_java.service.exception.ControllerNotFoundException;
+import com.sirkaue.api_java.service.exception.DatabaseException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,5 +27,21 @@ public class ControllerExceptionHandler {
         error.setPath(request.getRequestURI());
 
         return ResponseEntity.status(httpStatus).body(error);
+    }
+
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<StandardError> database(DatabaseException e, HttpServletRequest request) {
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        StandardError error = new StandardError();
+
+        error.setTimestamp(Instant.now());
+        error.setStatus(status.value());
+        error.setError("Database exception");
+        error.setMessage(e.getMessage());
+        error.setPath(request.getRequestURI());
+
+        return ResponseEntity.status(status).body(error);
     }
 }

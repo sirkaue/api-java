@@ -4,6 +4,7 @@ import com.sirkaue.api_java.dto.ClientDto;
 import com.sirkaue.api_java.entity.Client;
 import com.sirkaue.api_java.repository.ClientRepository;
 import com.sirkaue.api_java.service.exception.ControllerNotFoundException;
+import com.sirkaue.api_java.service.exception.DatabaseException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,5 +63,12 @@ public class ClientService {
         } catch (EntityNotFoundException e) {
             throw new ControllerNotFoundException(String.format("ID %s not found", id));
         }
+    }
+
+    public void delete(Long id) {
+        if (!clientRepository.existsById(id)) {
+            throw new DatabaseException("Integrity violation");
+        }
+        clientRepository.deleteById(id);
     }
 }
