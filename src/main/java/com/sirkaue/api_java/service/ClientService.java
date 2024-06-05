@@ -7,12 +7,12 @@ import com.sirkaue.api_java.service.exception.ControllerNotFoundException;
 import com.sirkaue.api_java.service.exception.DatabaseException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ClientService {
@@ -21,11 +21,10 @@ public class ClientService {
     private ClientRepository clientRepository;
 
     @Transactional(readOnly = true)
-    public List<ClientDto> findAll() {
-        List<Client> list = clientRepository.findAll();
+    public Page<ClientDto> findAllPaged(PageRequest pageRequest) {
+        Page<Client> list = clientRepository.findAll(pageRequest);
 
-        List<ClientDto> listDto = list.stream()
-                .map(x -> new ClientDto(x)).collect(Collectors.toList());
+        Page<ClientDto> listDto = list.map(x -> new ClientDto(x));
         return listDto;
     }
 

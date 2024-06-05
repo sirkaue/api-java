@@ -3,12 +3,14 @@ package com.sirkaue.api_java.controller;
 import com.sirkaue.api_java.dto.ClientDto;
 import com.sirkaue.api_java.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/clients")
@@ -18,8 +20,15 @@ public class ClientController {
     private ClientService clientService;
 
     @GetMapping
-    public ResponseEntity<List<ClientDto>> findAll() {
-        List<ClientDto> list = clientService.findAll();
+    public ResponseEntity<Page<ClientDto>> findAll(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "linesPerPage", defaultValue = "5") Integer linesPerPage,
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+            @RequestParam(value = "orderBy", defaultValue = "name") String orderBy
+    ) {
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+
+        Page<ClientDto> list = clientService.findAllPaged(pageRequest);
         return ResponseEntity.ok().body(list);
     }
 
