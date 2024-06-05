@@ -3,11 +3,13 @@ package com.sirkaue.api_java.service;
 import com.sirkaue.api_java.dto.ClientDto;
 import com.sirkaue.api_java.entity.Client;
 import com.sirkaue.api_java.repository.ClientRepository;
+import com.sirkaue.api_java.service.exception.ControllerNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,5 +25,13 @@ public class ClientService {
         List<ClientDto> listDto = list.stream()
                 .map(x -> new ClientDto(x)).collect(Collectors.toList());
         return listDto;
+    }
+
+    @Transactional(readOnly = true)
+    public ClientDto findById(Long id) {
+        Optional<Client> obj = clientRepository.findById(id);
+
+        Client client = obj.orElseThrow(() -> new ControllerNotFoundException("Entity not found"));
+        return new ClientDto(client);
     }
 }
