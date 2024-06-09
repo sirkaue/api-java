@@ -1,10 +1,10 @@
-package com.sirkaue.api_java.service;
+package com.sirkaue.clientapi.service;
 
-import com.sirkaue.api_java.dto.ClientDto;
-import com.sirkaue.api_java.entity.Client;
-import com.sirkaue.api_java.repository.ClientRepository;
-import com.sirkaue.api_java.service.exception.ControllerNotFoundException;
-import com.sirkaue.api_java.service.exception.DatabaseException;
+import com.sirkaue.clientapi.dto.ClientDto;
+import com.sirkaue.clientapi.entity.Client;
+import com.sirkaue.clientapi.repository.ClientRepository;
+import com.sirkaue.clientapi.service.exception.ControllerNotFoundException;
+import com.sirkaue.clientapi.service.exception.DatabaseException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

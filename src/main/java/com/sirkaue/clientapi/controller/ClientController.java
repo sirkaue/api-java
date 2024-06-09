@@ -1,7 +1,7 @@
-package com.sirkaue.api_java.controller;
+package com.sirkaue.clientapi.controller;
 
-import com.sirkaue.api_java.dto.ClientDto;
-import com.sirkaue.api_java.service.ClientService;
+import com.sirkaue.clientapi.dto.ClientDto;
+import com.sirkaue.clientapi.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

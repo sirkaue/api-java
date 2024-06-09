@@ -1,7 +1,7 @@
-package com.sirkaue.api_java.controller.exception;
+package com.sirkaue.clientapi.controller.exception;
 
-import com.sirkaue.api_java.service.exception.ControllerNotFoundException;
-import com.sirkaue.api_java.service.exception.DatabaseException;
+import com.sirkaue.clientapi.service.exception.ControllerNotFoundException;
+import com.sirkaue.clientapi.service.exception.DatabaseException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

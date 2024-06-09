@@ -1,4 +1,4 @@
-package com.sirkaue.api_java.controller.exception;
+package com.sirkaue.clientapi.controller.exception;
 
 import java.io.Serializable;
 import java.time.Instant;

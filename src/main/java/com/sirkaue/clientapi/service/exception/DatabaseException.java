@@ -1,4 +1,4 @@
-package com.sirkaue.api_java.service.exception;
+package com.sirkaue.clientapi.service.exception;
 
 public class DatabaseException extends RuntimeException {
 

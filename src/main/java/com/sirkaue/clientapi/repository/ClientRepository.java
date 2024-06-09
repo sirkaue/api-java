@@ -1,6 +1,6 @@
-package com.sirkaue.api_java.repository;
+package com.sirkaue.clientapi.repository;
 
-import com.sirkaue.api_java.entity.Client;
+import com.sirkaue.clientapi.entity.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
