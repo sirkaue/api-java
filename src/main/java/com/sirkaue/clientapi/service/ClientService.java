@@ -8,7 +8,7 @@ import com.sirkaue.clientapi.service.exception.DatabaseException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +21,8 @@ public class ClientService {
     private ClientRepository clientRepository;
 
     @Transactional(readOnly = true)
-    public Page<ClientDto> findAllPaged(PageRequest pageRequest) {
-        Page<Client> list = clientRepository.findAll(pageRequest);
-
+    public Page<ClientDto> findAllPaged(Pageable pageable) {
+        Page<Client> list = clientRepository.findAll(pageable);
         Page<ClientDto> listDto = list.map(x -> new ClientDto(x));
         return listDto;
     }
