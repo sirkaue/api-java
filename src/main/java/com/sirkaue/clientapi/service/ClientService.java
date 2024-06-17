@@ -12,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 public class ClientService {
 
@@ -29,20 +27,15 @@ public class ClientService {
 
     @Transactional(readOnly = true)
     public ClientDto findById(Long id) {
-        Optional<Client> obj = clientRepository.findById(id);
-
-        Client client = obj.orElseThrow(() -> new ControllerNotFoundException("Entity not found"));
+        Client client = clientRepository.findById(id)
+                .orElseThrow(() -> new ControllerNotFoundException("Entity not found"));
         return new ClientDto(client);
     }
 
     @Transactional
     public ClientDto insert(ClientDto dto) {
         Client entity = new Client();
-        entity.setName(dto.getName());
-        entity.setCpf(dto.getCpf());
-        entity.setIncome(dto.getIncome());
-        entity.setBirthDate(dto.getBirthDate());
-        entity.setChildren(dto.getChildren());
+        copyDtoToEntity(dto, entity);
         entity = clientRepository.save(entity);
         return new ClientDto(entity);
     }
@@ -51,11 +44,7 @@ public class ClientService {
     public ClientDto update(Long id, ClientDto dto) {
         try {
             Client entity = clientRepository.getReferenceById(id);
-            entity.setName(dto.getName());
-            entity.setCpf(dto.getCpf());
-            entity.setIncome(dto.getIncome());
-            entity.setBirthDate(dto.getBirthDate());
-            entity.setChildren(dto.getChildren());
+            copyDtoToEntity(dto, entity);
             entity = clientRepository.save(entity);
             return new ClientDto(entity);
         } catch (EntityNotFoundException e) {
@@ -65,8 +54,22 @@ public class ClientService {
 
     public void delete(Long id) {
         if (!clientRepository.existsById(id)) {
-            throw new DatabaseException("Integrity violation");
+            throw new ControllerNotFoundException("Resource not found");
         }
-        clientRepository.deleteById(id);
+        try {
+            clientRepository.deleteById(id);
+        } catch (DatabaseException e) {
+            throw new DatabaseException(String.format("Unable to delete resource with ID %s. " +
+                    "The resource is associated with other entities", id));
+        }
+
+    }
+
+    private void copyDtoToEntity(ClientDto dto, Client entity) {
+        entity.setName(dto.getName());
+        entity.setCpf(dto.getCpf());
+        entity.setIncome(dto.getIncome());
+        entity.setBirthDate(dto.getBirthDate());
+        entity.setChildren(dto.getChildren());
     }
 }
